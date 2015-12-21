@@ -13,7 +13,7 @@ render sloth =
     Root ->
       Nothing
     InvalidSloth message ->
-      Just ("\"" ++ message ++ "\"")
+      Just (Json.encode 2 (errorMessageToJson message))
     Sloth _ content ->
       Just (Json.encode 2 (contentToJson content))
 
@@ -47,3 +47,8 @@ contentToJson content =
             , ("failed", Json.bool True)
             , ("message", Json.string (Suite.getTestErrorMessage result))
             ]
+
+
+errorMessageToJson : String -> Json.Value
+errorMessageToJson message =
+  Json.object [ ("error", Json.string message) ]

@@ -1,20 +1,28 @@
 module Sloth.Suite where
 
 
+{-|
+@docs Content, TestResult, appendChild, getChildren, getResult, getTestErrorMessage, getTitle, testFailed
+-}
+
+
 import List exposing (append)
 import Result exposing (Result(..))
 
 
+{-| -}
 type alias TestResult =
   Result String (Maybe String)
 
 
+{-| -}
 type Content
   = Root (List Content)
   | TestSuite String (List Content)
   | TestCase String TestResult
 
 
+{-| -}
 appendChild : Content -> Content -> Result String Content
 appendChild parent child =
   case parent of
@@ -30,10 +38,11 @@ appendChild parent child =
           |> TestSuite title
       in
         Ok value
-    TestCase title _ ->
-      Err "WTF!"
+    TestCase _ _ ->
+      Err "You can't append content to TestCase."
 
 
+{-| -}
 getChildren : Content -> Maybe (List Content)
 getChildren content =
   case content of
@@ -45,6 +54,7 @@ getChildren content =
       Nothing
 
 
+{-| -}
 getResult : Content -> Maybe TestResult
 getResult content =
   case content of
@@ -56,6 +66,7 @@ getResult content =
       Just result
 
 
+{-| -}
 getTitle : Content -> Maybe String
 getTitle content =
   case content of
@@ -67,6 +78,7 @@ getTitle content =
       Just title
 
 
+{-| -}
 testFailed : TestResult -> Bool
 testFailed result =
   case result of
@@ -76,6 +88,7 @@ testFailed result =
       True
 
 
+{-| -}
 getTestErrorMessage : TestResult -> String
 getTestErrorMessage result =
   case result of
