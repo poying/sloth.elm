@@ -3,5 +3,5 @@
 - [x] Basic API (describe, it)
 - [ ] Reporter
   - [ ] CLI
-  - [ ] JSON
+  - [x] JSON
   - [ ] HTML
