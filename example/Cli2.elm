@@ -1,4 +1,4 @@
-module Cli where
+module Cli2 where
 
 
 import Sloth exposing (..)

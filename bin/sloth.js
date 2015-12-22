@@ -10,17 +10,18 @@ var run = require('../lib/run');
 program
   .version(pkg.version)
   .usage('[options] <file>')
-  .option('-r, --reporter [reporter_name]', 'choose a reporter', /^(ansi|json)$/, 'ansi')
+  .option('--reporter [reporter_name]', 'choose a reporter', /^(ansi|json)$/, 'ansi')
+  .option('--root [dirname]', 'change root dir path', process.cwd())
   .parse(process.argv);
 
-const file = program.args[0];
+const files = program.args;
 
-if (!file) {
+if (!files.length) {
   program.help();
 }
 
 co(function *() {
-  let result = yield run(file, program.reporter);
+  let result = yield run(files, program);
   console.log();
   console.log(result);
   console.log();
