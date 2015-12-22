@@ -1,21 +1,36 @@
-module Sloth.Reporter.Json (render) where
+module Sloth.Reporters.Json (render) where
 
 
-import List exposing (map)
+import List exposing (map, foldr)
 import Json.Encode as Json
 import Sloth.Suite as Suite
-import Sloth exposing (..) 
+import Sloth.Data exposing (..) 
 
 
-render : Sloth -> Maybe String
-render sloth =
-  case sloth of
+render : List (String, Data) -> String
+render list =
+  list
+    |> map renderData
+    |> Json.list
+    |> Json.encode 2
+
+
+renderData : (String, Data) -> Json.Value
+renderData (title, data) =
+  case data of
     Root ->
-      Nothing
-    InvalidSloth message ->
-      Just (Json.encode 2 (errorMessageToJson message))
-    Sloth _ content ->
-      Just (Json.encode 2 (contentToJson content))
+      Json.null
+    InvalidNode message ->
+      Json.object
+        [ ("title", Json.string title)
+        , ("result", Json.null)
+        , ("message", errorMessageToJson message)
+        ]
+    Node _ content ->
+      Json.object
+        [ ("title", Json.string title)
+        , ("result", contentToJson content)
+        ]
 
 
 contentToJson : Suite.Content -> Json.Value

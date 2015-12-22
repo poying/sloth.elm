@@ -1,0 +1,40 @@
+module Main where
+
+
+import Sloth exposing (..)
+
+
+tests =
+  [ ("test1", tests1)
+  , ("test2", tests2)
+  ]
+
+
+tests1 =
+  tree
+    `describe` "a"
+      `it` "1" => err "a1.err"
+      `it` "2" => err "a2.err"
+      `end` 1
+    `describe` "b"
+      `it` "1" => err "b1.err"
+      `it` "2" => ok
+      `describe` "c"
+        `it` "1" => err "c1.err"
+        `it` "2" => err "c2.err"
+        `end` 2
+
+
+tests2 =
+  tree
+    `describe` "a"
+      `it` "1" => err "a1.err"
+      `it` "2" => err "a2.err"
+      `end` 1
+    `describe` "b"
+      `it` "1" => err "b1.err"
+      `it` "2" => ok
+      `describe` "c"
+        `it` "1" => err "c1.err"
+        `it` "2" => err "c2.err"
+        `end` 2

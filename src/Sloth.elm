@@ -1,6 +1,5 @@
 module Sloth
-  ( Sloth (Sloth, Root, InvalidSloth)
-  , sloth
+  ( tree
   , describe, it, end
   , ok, err
   , (=>)
@@ -8,8 +7,7 @@ module Sloth
 
 
 {-|
-@docs Sloth
-@docs sloth
+@docs tree
 @docs describe, it, end
 @docs ok, err
 @docs (=>)
@@ -17,87 +15,62 @@ module Sloth
 
 
 import Sloth.Suite as Suite
-import Maybe exposing (Maybe(Just, Nothing))
-import Graphics.Element exposing (Element, show)
+import Sloth.Data exposing (..)
+import Sloth.Reporters
 
 
 {-| -}
-type Sloth
-  = Sloth Sloth Suite.Content
-  | Root
-  | InvalidSloth String
+tree : Data
+tree =
+  Node Root (Suite.Root [])
 
 
 {-| -}
-sloth : Sloth
-sloth =
-  Sloth Root (Suite.Root [])
-
-
-{-| -}
-describe : Sloth -> String -> Sloth
-describe sloth title =
-  case sloth of
-    Sloth _ _ ->
-      Sloth sloth (Suite.TestSuite title [])
+describe : Data -> String -> Data
+describe data title =
+  case data of
+    Node _ _ ->
+      Node data (Suite.TestSuite title [])
     Root ->
-      InvalidSloth "You can't create test suites in Root."
-    InvalidSloth _ ->
-      sloth
+      InvalidNode "You can't create test suites in Root."
+    InvalidNode _ ->
+      data
 
 
 infixl 8 `describe`
 
 
 {-| -}
-it : Sloth -> (String, Suite.TestResult) -> Sloth
-it sloth (title, testResult) =
-  case sloth of
-    Sloth _ _ ->
-      appendContent sloth (Suite.TestCase title testResult)
+it : Data -> (String, Suite.TestResult) -> Data
+it data (title, testResult) =
+  case data of
+    Node _ _ ->
+      appendContent data (Suite.TestCase title testResult)
     Root ->
-      InvalidSloth "You can't create test cases in Root."
-    InvalidSloth _ ->
-      sloth
+      InvalidNode "You can't create test cases in Root."
+    InvalidNode _ ->
+      data
 
 
 infixl 8 `it`
 
 
 {-| -}
-end : Sloth -> Int -> Sloth
-end sloth level =
-  case sloth of
-    Sloth parent content ->
+end : Data -> Int -> Data
+end data level =
+  case data of
+    Node parent content ->
       if level == 0 then
-        sloth
+        data
       else
         end (appendContent parent content) (level - 1)
     Root ->
-      sloth
-    InvalidSloth _ ->
-      sloth
+      data
+    InvalidNode _ ->
+      data
 
 
 infixl 8 `end`
-
-
-appendContent : Sloth -> Suite.Content -> Sloth
-appendContent sloth content = 
-  case sloth of
-    Sloth parentSloth parentContent ->
-      let
-        result = Suite.appendChild parentContent content
-      in
-        case result of
-          Ok newContent ->
-            Sloth parentSloth newContent
-          Err message ->
-            InvalidSloth message
-    Root ->
-      InvalidSloth "This will never happen."
-    InvalidSloth _ ->
-      sloth
 
 
 {-| -}

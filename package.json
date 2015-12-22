@@ -1,0 +1,29 @@
+{
+  "name": "sloth.elm",
+  "version": "1.0.0",
+  "description": "> WIP",
+  "main": "elm.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poying/sloth.elm.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/poying/sloth.elm/issues"
+  },
+  "homepage": "https://github.com/poying/sloth.elm#readme",
+  "dependencies": {
+    "co": "^4.6.0",
+    "commander": "^2.9.0",
+    "phantom": "^0.8.4",
+    "phantomjs": "^1.9.19",
+    "randomstring": "^1.1.3"
+  }
+}

@@ -2,14 +2,12 @@ module Main where
 
 
 import Sloth exposing (..)
-import Sloth.Reporter.Json exposing (render)
-import Result exposing (Result(Ok, Err))
+import Sloth.Reporters exposing (json)
 import Graphics.Element exposing (show)
-import Debug
 
 
 tests =
-  sloth
+  tree
     `describe` "a"
       `it` "1" => err "a1.err"
       `it` "2" => err "a2.err"
@@ -23,10 +21,4 @@ tests =
         `end` 2
 
 
-main =
-  case render tests of
-    Just json ->
-      show json
-        |> Debug.log "json"
-    Nothing ->
-      show "Nothing"
+main = show (json [("Web.elm", tests)])
