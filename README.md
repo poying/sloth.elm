@@ -1,7 +1,7 @@
 > WIP
 
 - [x] Basic API (describe, it)
-- [ ] Reporter
-  - [ ] CLI
+- [x] Reporter
+  - [x] CLI
   - [x] JSON
-  - [ ] HTML
+- [ ] Assertion 
