@@ -2,15 +2,69 @@ module Sloth.Reporters.Ansi (render) where
 
 
 import String exposing (join)
-import List exposing (map, filter, foldr)
+import List exposing (map, filter, foldl)
 import String exposing (repeat)
 import Sloth.Suite as Suite
+import Sloth.Counter as Counter
 import Sloth.Data exposing (..) 
 import Result exposing (Result(..))
 
 
 render : List (String, Data) -> String
 render list =
+  let
+    count = renderCounter list
+    detail = renderDetail list
+  in
+    detail ++ "\n\n" ++ count
+
+
+renderCounter : List (String, Data) -> String
+renderCounter list =
+  let
+    counter = list
+      |> map countData
+      |> foldl Counter.combine Counter.counter
+    passing = toString counter.passing
+    failing = toString counter.failing
+  in
+    ""
+      ++ green ("  " ++ passing ++ " passing\n")
+      ++ red ("  " ++ failing ++ " failing")
+
+
+countData : (String, Data) -> Counter.Counter
+countData (_, data) =
+  case data of
+    Root ->
+      Counter.counter
+    InvalidNode _ ->
+      Counter.counter
+    Node _ content ->
+      countContent content
+
+
+countContent : Suite.Content -> Counter.Counter
+countContent content =
+  case content of
+    Suite.Root children ->
+      children
+        |> map countContent
+        |> foldl Counter.combine Counter.counter
+    Suite.TestSuite _ children ->
+      children
+        |> map countContent
+        |> foldl Counter.combine Counter.counter
+    Suite.TestCase title result ->
+      case result of
+        Ok _ ->
+          Counter.pass 
+        Err message ->
+          Counter.fail
+
+
+renderDetail : List (String, Data) -> String
+renderDetail list =
   list
     |> map renderData
     |> filter notNothing
