@@ -1,6 +1,9 @@
+Sloth.elm
+=========
+
 [![elm docs](https://img.shields.io/badge/elm--docs-1.0.0-60B5CC.svg)](http://package.elm-lang.org/packages/poying/sloth.elm/1.0.0/)
 
-![Screen Shot](./screenshot.png)
+Sloth is a testing framework for Elm. It is inspired from the Node.js module [Mocha](https://github.com/mochajs/mocha).
 
 ```elm
 module MyTest where

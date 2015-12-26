@@ -5,7 +5,7 @@ module Sloth
   ) where
 
 
-{-| Sloth is a testing framework from Elm. It is inspired from the Node.js module [Mocha](https://github.com/mochajs/mocha).
+{-| Sloth is a testing framework for Elm. It is inspired from the Node.js module [Mocha](https://github.com/mochajs/mocha).
 
 # Creating Tests
 @docs start, describe, it, end
