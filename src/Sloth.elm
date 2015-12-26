@@ -5,10 +5,12 @@ module Sloth
   ) where
 
 
-{-|
-@docs start
-@docs describe, it, end
-@docs ok, err
+{-| Sloth is a testing framework from Elm. It is inspired from the Node.js module [Mocha](https://github.com/mochajs/mocha).
+
+# Creating Tests
+@docs start, describe, it, end
+
+# Operators
 @docs (=>)
 -}
 
@@ -18,13 +20,13 @@ import Sloth.Data exposing (..)
 import Sloth.Reporters
 
 
-{-| -}
+{-| Create a `Data` which conatins all test cases and suites. -}
 start : Data
 start =
   Node Root (Suite.Root [])
 
 
-{-| -}
+{-| Open a describe block. -}
 describe : Data -> String -> Data
 describe data title =
   case data of
@@ -39,7 +41,7 @@ describe data title =
 infixl 8 `describe`
 
 
-{-| -}
+{-| Create a test case. -}
 it : Data -> (String, Suite.TestStatus) -> Data
 it data (title, status) =
   case data of
@@ -54,7 +56,7 @@ it data (title, status) =
 infixl 8 `it`
 
 
-{-| -}
+{-| Close describe block(s). -}
 end : Data -> Int -> Data
 end data level =
   case data of

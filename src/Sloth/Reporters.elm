@@ -1,10 +1,13 @@
 module Sloth.Reporters
-  ( json
-  , ansi
+  ( RenderResult (Pass, Fail)
+  , json, ansi
   ) where
 
 
-{-|
+{-| Sloth.Reporters provides some method to render test results.
+
+@docs RenderResult
+
 @docs json, ansi
 -}
 
@@ -19,8 +22,10 @@ type alias Renderer =
   (Counter -> List (String, Data) -> String)
 
 
-type alias RenderResult =
-  Result String String
+{-| -}
+type RenderResult
+  = Pass String
+  | Fail String
 
 
 render : Renderer -> List (String, Data) -> RenderResult
@@ -30,18 +35,18 @@ render renderer list =
     rendered = renderer counter list
   in
     case counter.failing of
-      0 -> Ok rendered
-      _ -> Err rendered
+      0 -> Pass rendered
+      _ -> Fail rendered
 
 
 
-{-| -}
+{-| Render result as JSON. -}
 json : List (String, Data) -> RenderResult
 json =
   render Json.render
 
 
-{-| -}
+{-| Render result as ANSI. -}
 ansi : List (String, Data) -> RenderResult
 ansi =
   render Ansi.render

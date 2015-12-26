@@ -4,6 +4,12 @@ module Sloth.Assertion
   ) where
 
 
+{-| Sloth.Assertion provides some assertion helpers.
+
+@docs shouldBe, shouldNotBe
+-}
+
+
 import Sloth.Suite as Suite
 import Sloth.Data exposing (..)
 
@@ -17,11 +23,13 @@ assert bool =
       Suite.Fail
 
 
+{-| -}
 shouldBe : a -> a -> Suite.TestStatus
 shouldBe actual expect =
   assert (actual == expect)
 
 
+{-| -}
 shouldNotBe : a -> a -> Suite.TestStatus
 shouldNotBe actual expect =
   assert (actual /= expect)
