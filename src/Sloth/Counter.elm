@@ -1,4 +1,12 @@
-module Sloth.Counter where
+module Sloth.Counter
+  ( Counter
+  , count
+  ) where
+
+
+import Sloth.Suite as Suite
+import Sloth.Data exposing (..)
+import List exposing (map, foldl)
 
 
 type alias Counter =
@@ -33,3 +41,40 @@ fail =
   { counter |
       failing = counter.failing + 1
   }
+
+
+count : List (String, Data) -> Counter
+count list =
+  list
+    |> map countData
+    |> foldl combine counter
+
+
+countData : (String, Data) -> Counter
+countData (_, data) =
+  case data of
+    Root ->
+      counter
+    InvalidNode _ ->
+      counter
+    Node _ content ->
+      countContent content
+
+
+countContent : Suite.Content -> Counter
+countContent content =
+  case content of
+    Suite.Root children ->
+      children
+        |> map countContent
+        |> foldl combine counter
+    Suite.TestSuite _ children ->
+      children
+        |> map countContent
+        |> foldl combine counter
+    Suite.TestCase title result ->
+      case result of
+        Ok _ ->
+          pass 
+        Err message ->
+          fail

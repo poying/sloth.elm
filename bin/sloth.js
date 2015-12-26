@@ -23,8 +23,10 @@ if (!files.length) {
 co(function *() {
   let result = yield run(files, program);
   console.log();
-  console.log(result);
+  console.log(result.output);
   console.log();
+  process.exit(result.success ? 0 : 1);
 }).catch(function (err) {
   console.log(err.message);
+  process.exit(1);
 });

@@ -4,11 +4,12 @@ module Sloth.Reporters.Json (render) where
 import List exposing (map, foldr)
 import Json.Encode as Json
 import Sloth.Suite as Suite
+import Sloth.Counter exposing (Counter)
 import Sloth.Data exposing (..) 
 
 
-render : List (String, Data) -> String
-render list =
+render : Counter -> List (String, Data) -> String
+render counter list =
   list
     |> map renderData
     |> Json.list

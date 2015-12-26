@@ -5,62 +5,29 @@ import String exposing (join)
 import List exposing (map, filter, foldl)
 import String exposing (repeat)
 import Sloth.Suite as Suite
-import Sloth.Counter as Counter
 import Sloth.Data exposing (..) 
+import Sloth.Counter exposing (Counter)
 import Result exposing (Result(..))
 
 
-render : List (String, Data) -> String
-render list =
+render : Counter -> List (String, Data) -> String
+render counter list =
   let
-    count = renderCounter list
+    count = renderCounter counter
     detail = renderDetail list
   in
     detail ++ "\n\n" ++ count
 
 
-renderCounter : List (String, Data) -> String
-renderCounter list =
+renderCounter : Counter -> String
+renderCounter counter =
   let
-    counter = list
-      |> map countData
-      |> foldl Counter.combine Counter.counter
     passing = toString counter.passing
     failing = toString counter.failing
   in
     ""
-      ++ green ("  " ++ passing ++ " passing\n")
-      ++ red ("  " ++ failing ++ " failing")
-
-
-countData : (String, Data) -> Counter.Counter
-countData (_, data) =
-  case data of
-    Root ->
-      Counter.counter
-    InvalidNode _ ->
-      Counter.counter
-    Node _ content ->
-      countContent content
-
-
-countContent : Suite.Content -> Counter.Counter
-countContent content =
-  case content of
-    Suite.Root children ->
-      children
-        |> map countContent
-        |> foldl Counter.combine Counter.counter
-    Suite.TestSuite _ children ->
-      children
-        |> map countContent
-        |> foldl Counter.combine Counter.counter
-    Suite.TestCase title result ->
-      case result of
-        Ok _ ->
-          Counter.pass 
-        Err message ->
-          Counter.fail
+      |> (++) (red ("  " ++ failing ++ " failing"))
+      |> (++) (green ("  " ++ passing ++ " passing\n"))
 
 
 renderDetail : List (String, Data) -> String

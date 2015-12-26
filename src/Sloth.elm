@@ -1,5 +1,5 @@
 module Sloth
-  ( tree
+  ( start
   , describe, it, end
   , ok, err
   , (=>)
@@ -7,7 +7,7 @@ module Sloth
 
 
 {-|
-@docs tree
+@docs start
 @docs describe, it, end
 @docs ok, err
 @docs (=>)
@@ -20,8 +20,8 @@ import Sloth.Reporters
 
 
 {-| -}
-tree : Data
-tree =
+start : Data
+start =
   Node Root (Suite.Root [])
 
 
