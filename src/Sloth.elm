@@ -1,7 +1,6 @@
 module Sloth
   ( start
   , describe, it, end
-  , ok, err
   , (=>)
   ) where
 
@@ -41,11 +40,11 @@ infixl 8 `describe`
 
 
 {-| -}
-it : Data -> (String, Suite.TestResult) -> Data
-it data (title, testResult) =
+it : Data -> (String, Suite.TestStatus) -> Data
+it data (title, status) =
   case data of
     Node _ _ ->
-      appendContent data (Suite.TestCase title testResult)
+      appendContent data (Suite.TestCase title status)
     Root ->
       InvalidNode "You can't create test cases in Root."
     InvalidNode _ ->
@@ -74,21 +73,9 @@ infixl 8 `end`
 
 
 {-| -}
-(=>) : String -> Suite.TestResult -> (String, Suite.TestResult)
+(=>) : String -> Suite.TestStatus -> (String, Suite.TestStatus)
 (=>) title result =
   (title, result)
 
 
 infixl 9 =>
-
-
-{-| -}
-ok : Suite.TestResult
-ok = 
-  Ok Nothing
-
-
-{-| -}
-err : String -> Suite.TestResult
-err message =
-  Err message

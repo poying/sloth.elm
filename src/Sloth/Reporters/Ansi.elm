@@ -7,7 +7,6 @@ import String exposing (repeat)
 import Sloth.Suite as Suite
 import Sloth.Data exposing (..) 
 import Sloth.Counter exposing (Counter)
-import Result exposing (Result(..))
 
 
 render : Counter -> List (String, Data) -> String
@@ -65,20 +64,19 @@ contentToString level content =
           |> map (contentToString (level + 1))
           |> join "\n"
           |> (++) (prefix ++ title ++ "\n")
-    Suite.TestCase title result ->
+    Suite.TestCase title status ->
       let
         prefix  = repeat level "  "
       in
-         case result of
-           Ok _ ->
+         case status of
+           Suite.Pass ->
              prefix
                ++ green "✔︎ "
                ++ title
-           Err message ->
+           Suite.Fail ->
              prefix
                ++ red "✘ "
                ++ title
-               ++ gray (" (" ++ message ++ ")")
 
 
 ansi : (Int, Int) -> String -> String

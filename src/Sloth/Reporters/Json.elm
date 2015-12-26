@@ -48,20 +48,19 @@ contentToJson content =
         , ("title", Json.string title)
         , ("children", Json.list (map contentToJson children))
         ]
-    Suite.TestCase title result ->
-      case result of
-        Ok _ ->
+    Suite.TestCase title status ->
+      case status of
+        Suite.Pass ->
           Json.object
             [ ("type", Json.string "case")
             , ("title", Json.string title)
             , ("failed", Json.bool False)
             ]
-        Err message ->
+        Suite.Fail ->
           Json.object
             [ ("type", Json.string "case")
             , ("title", Json.string title)
             , ("failed", Json.bool True)
-            , ("message", Json.string (Suite.getTestErrorMessage result))
             ]
 
 

@@ -1,14 +1,27 @@
-module Sloth.Assertion where
+module Sloth.Assertion
+  ( shouldBe
+  , shouldNotBe
+  ) where
 
 
 import Sloth.Suite as Suite
 import Sloth.Data exposing (..)
 
 
-assert : Bool -> String -> Suite.TestResult
-assert bool message =
+assert : Bool -> Suite.TestStatus
+assert bool =
   case bool of
     True ->
-      Ok Nothing
+      Suite.Pass
     False ->
-      Err message
+      Suite.Fail
+
+
+shouldBe : a -> a -> Suite.TestStatus
+shouldBe actual expect =
+  assert (actual == expect)
+
+
+shouldNotBe : a -> a -> Suite.TestStatus
+shouldNotBe actual expect =
+  assert (actual /= expect)

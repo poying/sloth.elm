@@ -74,7 +74,7 @@ countContent content =
         |> foldl combine counter
     Suite.TestCase title result ->
       case result of
-        Ok _ ->
+        Suite.Pass ->
           pass 
-        Err message ->
+        Suite.Fail ->
           fail
