@@ -54,13 +54,13 @@ contentToJson content =
           Json.object
             [ ("type", Json.string "case")
             , ("title", Json.string title)
-            , ("failed", Json.bool False)
+            , ("pass", Json.bool True)
             ]
         Suite.Fail ->
           Json.object
             [ ("type", Json.string "case")
             , ("title", Json.string title)
-            , ("failed", Json.bool True)
+            , ("pass", Json.bool False)
             ]
 
 
