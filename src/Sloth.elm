@@ -8,6 +8,9 @@ module Sloth
 
 {-| Sloth is a testing framework for Elm. It is inspired from the Node.js module [Mocha](https://github.com/mochajs/mocha).
 
+#Types
+@docs Data
+
 # Creating Tests
 @docs start, describe, it, end
 
@@ -21,6 +24,7 @@ import Sloth.Data exposing (..)
 import Sloth.Reporters
 
 
+{-| -}
 type alias Data = Sloth.Data.Data
 
 
