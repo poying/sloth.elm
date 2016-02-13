@@ -2,6 +2,7 @@ module Sloth
   ( start
   , describe, it, end
   , (=>)
+  , Data
   ) where
 
 
@@ -18,6 +19,9 @@ module Sloth
 import Sloth.Suite as Suite
 import Sloth.Data exposing (..)
 import Sloth.Reporters
+
+
+type alias Data = Sloth.Data.Data
 
 
 {-| Create a `Data` which conatins all test cases and suites. -}
